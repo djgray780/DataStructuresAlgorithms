@@ -1,0 +1,19 @@
+# Misc
+misc
+__pycache__
+
+# Folders
+.vscode
+.pytest_cache
+.mypy_cache
+
+
+# Directories
+venv
+Sequences
+StackHeap
+Problems
+
+# Files
+
+https://github.com/Shopify/dev-interviews/tree/main/coding-exercises

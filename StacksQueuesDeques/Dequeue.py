@@ -33,7 +33,7 @@ class Dequeue:
     def add_to_back(self, object) -> None:
         if self._dequeue_is_full():
             self._resize_storage(2 * len(self._storage))
-        self._tail_idx = self._update_tail_idx()
+        self._tail_idx = self._increment_tail_idx()
         self._storage[self._tail_idx] = object
         self._num_elements += 1
 
@@ -44,12 +44,32 @@ class Dequeue:
         self._num_elements -= 1
         return to_remove
 
+    def remove_from_back(self):
+        to_remove = self._storage[self._tail_idx]
+        self._storage[self._tail_idx] = None
+        self._num_elements -= 1
+        self._tail_idx = self._decrement_tail_idx()
+        return to_remove
+
     def is_empty(self):
         return self._num_elements == 0
 
+    def peek_first(self):
+        pass
+
+    def peek_last(self):
+        pass
+
     # Utility Methods:
+
     def _resize_storage(self, new_capacity):
-        return
+        old_storage = self._storage
+        self._storage = [None] * new_capacity
+        walker = self._head_idx
+        for i in range(self._num_elements):
+            self._storage[i] = old_storage[walker]
+            walker = (1 + walker) % len(old_storage)
+        self._head_idx = 0
 
     def _decrement_head_idx(self) -> int:
         return (self._head_idx - 1) % len(self._storage)
@@ -57,8 +77,11 @@ class Dequeue:
     def _increment_head_idx(self) -> int:
         return (self._head_idx + 1) % len(self._storage)
 
-    def _update_tail_idx(self) -> int:
+    def _increment_tail_idx(self) -> int:
         return (self._head_idx + self._num_elements) % len(self._storage)
+
+    def _decrement_tail_idx(self) -> int:
+        return (self._head_idx + self._num_elements - 1) % len(self._storage)
 
     def _dequeue_is_full(self) -> bool:
         return self._num_elements == len(self._storage)
